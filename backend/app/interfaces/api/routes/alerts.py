@@ -18,7 +18,6 @@ def list_alerts(
     db: Session = Depends(get_db),
     _: UserModel = Depends(require_roles("operador", "analista", "administrador")),
 ):
-    # Orden de criticidad para priorizar atención en dashboard.
     severity_order = case(
         (AlertModel.nivel == "critica", 4),
         (AlertModel.nivel == "alta", 3),
@@ -37,7 +36,6 @@ def list_alerts(
 
 @router.post("/{alert_id}/resolve", response_model=AlertResponse)
 def resolve_alert(alert_id: int, payload: AlertResolveRequest, db: Session = Depends(get_db), user: UserModel = Depends(get_current_user)):
-    # Cierra alerta activa y deja trazabilidad (usuario + timestamp + notas).
     alert = db.get(AlertModel, alert_id)
     if not alert:
         raise HTTPException(status_code=404, detail="Alerta no encontrada")
