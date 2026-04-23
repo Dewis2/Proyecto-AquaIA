@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:16
+    container_name: aquaia_db
+    environment:
+      POSTGRES_DB: aquaia
+      POSTGRES_USER: aquaia_user
+      POSTGRES_PASSWORD: aquaia_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - aquaia_db_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    container_name: aquaia_backend
+    environment:
+      APP_NAME: AquaIA PMV1 API
+      ENV: dev
+      DATABASE_URL: postgresql+psycopg://aquaia_user:aquaia_pass@db:5432/aquaia
+      JWT_SECRET: change-me-please
+      JWT_ALGORITHM: HS256
+      JWT_EXPIRE_MINUTES: 60
+      CORS_ORIGINS: http://localhost:3000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+
+volumes:
+  aquaia_db_data:
