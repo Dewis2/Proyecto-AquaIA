@@ -1,11 +1,12 @@
-fastapi==0.110.0
-uvicorn==0.28.0
-scikit-learn==1.4.1.post1
-pandas==2.2.1
-numpy==1.26.4
-supabase==2.3.6
-python-dotenv==1.0.1
-prophet==1.1.5
-xgboost==2.0.3
-ortools==9.8.3296
-tensorflow==2.15.0
+fastapi>=0.116.1
+uvicorn>=0.35.0
+sqlalchemy>=2.0.43
+# Versiones recientes para mejor compatibilidad con Python 3.14.
+pydantic>=2.12.0
+pydantic-settings>=2.10.1
+python-jose>=3.5.0
+# Evitamos backend bcrypt (dependencia nativa) para reducir conflictos PyO3.
+passlib>=1.7.4
+email-validator>=2.2.0
+pytest>=8.4.1
+httpx>=0.28.1
