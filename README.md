@@ -9,41 +9,14 @@ Entrega académica enfocada **solo en PMV1**: monitoreo de consumo por zona, ale
 
 ## Levantar entorno
 
-## Guía de instalación detallada
-- Revisa `docs/guia-instalacion.md` para setup completo de backend, frontend y PostgreSQL.
-
-
-### Backend (Windows PowerShell)
-```powershell
-cd backend
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-# Si usas Python 3.14 y falla PyO3/pydantic-core:
-$env:PYO3_USE_ABI3_FORWARD_COMPATIBILITY="1"
-python -m pip install -r requirements.txt
-copy .env.example .env
-python -m scripts.seed_data
-python -m uvicorn main:app --reload
-```
-
-### Backend (Linux/macOS)
+### Backend
 ```bash
 cd backend
 python -m venv .venv && source .venv/bin/activate
-python -m pip install --upgrade pip
-# Si usas Python 3.14 y falla PyO3/pydantic-core:
-export PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1
-python -m pip install -r requirements.txt
+pip install -r requirements.txt
 cp .env.example .env
-python -m scripts.seed_data
-python -m uvicorn main:app --reload
-```
-
-### Alternativa recomendada si Python local da conflicto
-```bash
-docker compose up -d db backend
-docker compose exec backend python -m scripts.seed_data
+python scripts/seed_data.py
+uvicorn main:app --reload
 ```
 
 ### Frontend

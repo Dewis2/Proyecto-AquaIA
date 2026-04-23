@@ -68,8 +68,6 @@ cd backend
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-# Solo para Python 3.14 cuando falla pydantic-core/PyO3:
-$env:PYO3_USE_ABI3_FORWARD_COMPATIBILITY="1"
 python -m pip install -r requirements.txt
 copy .env.example .env
 ```
@@ -94,8 +92,6 @@ cd backend
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-# Solo para Python 3.14 cuando falla pydantic-core/PyO3:
-export PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1
 python -m pip install -r requirements.txt
 cp .env.example .env
 ```
@@ -173,22 +169,8 @@ python -m uvicorn main:app --reload
 ### Error PyO3 / binario incompatible en Python 3.14
 - Borra y recrea el entorno virtual (no reutilices `.venv` de otra versión de Python).
 - Ejecuta `python -m pip install --upgrade pip` antes de instalar requerimientos.
-- En Python 3.14, exporta temporalmente `PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1` antes de `pip install`.
 - Reinstala dependencias con `python -m pip install -r requirements.txt`.
 - En este proyecto se usa `pbkdf2_sha256` (passlib) para evitar dependencia nativa `bcrypt`.
-
-### Si quieres evitar por completo conflictos de Python local
-Levanta backend + PostgreSQL con Docker (usa Python 3.13 dentro del contenedor):
-
-```bash
-docker compose up -d db backend
-```
-
-Luego entra al contenedor backend para seed:
-
-```bash
-docker compose exec backend python -m scripts.seed_data
-```
 
 ### Error de conexión a PostgreSQL
 - Verifica que el servicio PostgreSQL esté encendido.

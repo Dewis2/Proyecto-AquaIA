@@ -1,12 +1,10 @@
-fastapi>=0.116.1
-uvicorn>=0.35.0
-sqlalchemy>=2.0.43
-# Versiones recientes para mejor compatibilidad con Python 3.14.
-pydantic>=2.12.0
-pydantic-settings>=2.10.1
-python-jose>=3.5.0
-# Evitamos backend bcrypt (dependencia nativa) para reducir conflictos PyO3.
-passlib>=1.7.4
-email-validator>=2.2.0
-pytest>=8.4.1
-httpx>=0.28.1
+fastapi==0.116.1
+uvicorn==0.35.0
+sqlalchemy==2.0.43
+pydantic==2.11.7
+pydantic-settings==2.10.1
+python-jose==3.5.0
+passlib[bcrypt]==1.7.4
+email-validator==2.2.0
+pytest==8.4.1
+httpx==0.28.1

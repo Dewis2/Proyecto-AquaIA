@@ -17,6 +17,3 @@ npm run dev
 
 ## Variables
 - `NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1`
-
-
-> Para instalación completa con backend y PostgreSQL, revisa `../docs/guia-instalacion.md`.
