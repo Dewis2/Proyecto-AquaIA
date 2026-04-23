@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import { PropsWithChildren } from 'react';
 
 const items = [
-  // Menú principal PMV1 (puede filtrarse por rol en una siguiente iteración).
   { href: '/', label: 'Dashboard' },
   { href: '/alerts', label: 'Alertas' },
   { href: '/zones', label: 'Zonas' },

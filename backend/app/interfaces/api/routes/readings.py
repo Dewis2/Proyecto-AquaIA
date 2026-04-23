@@ -17,7 +17,6 @@ def list_readings(
     db: Session = Depends(get_db),
     _: UserModel = Depends(require_roles("operador", "analista", "administrador")),
 ):
-    # Consulta base de lecturas + join a sensores para permitir filtro por tipo.
     query = db.query(ReadingModel).join(SensorModel, SensorModel.id == ReadingModel.sensor_id)
     if zone_id:
         query = query.filter(ReadingModel.zona_id == zone_id)
@@ -28,14 +27,11 @@ def list_readings(
 
 @router.post("", response_model=ReadingResponse)
 def create_reading(payload: ReadingCreate, db: Session = Depends(get_db), _: UserModel = Depends(require_roles("operador", "analista", "administrador"))):
-    # 1) Obtener configuración del sensor (zona + umbrales)
     sensor = db.get(SensorModel, payload.sensor_id)
     if not sensor:
         raise HTTPException(status_code=404, detail="Sensor no encontrado")
-    # 2) Calcular score/anomalía según umbrales configurados.
     score = anomaly_score(payload.valor, float(sensor.umbral_min), float(sensor.umbral_max))
     is_anomaly = score > 0
-    # 3) Persistir lectura histórica.
     reading = ReadingModel(
         sensor_id=sensor.id,
         zona_id=sensor.zona_id,
@@ -48,7 +44,6 @@ def create_reading(payload: ReadingCreate, db: Session = Depends(get_db), _: Use
     db.add(reading)
     db.flush()
     if is_anomaly:
-        # 4) Si hay anomalía, generar alerta automática.
         level = classify_level(score).value
         alert = AlertModel(
             sensor_id=sensor.id,
@@ -67,7 +62,6 @@ def create_reading(payload: ReadingCreate, db: Session = Depends(get_db), _: Use
 
 @router.post("/simulate")
 def simulate_readings(db: Session = Depends(get_db), _: UserModel = Depends(require_roles("administrador"))):
-    # Genera lecturas de prueba para todos los sensores existentes.
     sensors = db.query(SensorModel).all()
     if not sensors:
         raise HTTPException(status_code=400, detail="No hay sensores para simular")

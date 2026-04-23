@@ -5,7 +5,6 @@ from app.infrastructure.db.base import Base
 
 
 class UserModel(Base):
-    """Usuario del sistema con rol para control de acceso."""
     __tablename__ = "usuario"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     nombre: Mapped[str] = mapped_column(String(120), nullable=False)
@@ -18,7 +17,6 @@ class UserModel(Base):
 
 
 class ZoneModel(Base):
-    """Zona geográfica monitoreada (visible en mapa)."""
     __tablename__ = "zona"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     nombre: Mapped[str] = mapped_column(String(120), nullable=False, unique=True)
@@ -33,7 +31,6 @@ class ZoneModel(Base):
 
 
 class SensorModel(Base):
-    """Sensor IoT asociado a una zona y con umbrales de operación."""
     __tablename__ = "sensor"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     zona_id: Mapped[int] = mapped_column(ForeignKey("zona.id"), nullable=False)
@@ -48,7 +45,6 @@ class SensorModel(Base):
 
 
 class ReadingModel(Base):
-    """Lectura temporal de un sensor (serie histórica PMV1)."""
     __tablename__ = "lectura_sensor"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     sensor_id: Mapped[int] = mapped_column(ForeignKey("sensor.id"), nullable=False)
@@ -61,7 +57,6 @@ class ReadingModel(Base):
 
 
 class AlertModel(Base):
-    """Alerta operacional generada por lectura anómala."""
     __tablename__ = "alerta"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     sensor_id: Mapped[int] = mapped_column(ForeignKey("sensor.id"), nullable=False)
@@ -78,7 +73,6 @@ class AlertModel(Base):
 
 
 class AuditLogModel(Base):
-    """Bitácora mínima de acciones relevantes para trazabilidad."""
     __tablename__ = "audit_log"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     usuario_id: Mapped[int | None] = mapped_column(ForeignKey("usuario.id"), nullable=True)
